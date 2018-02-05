@@ -207,6 +207,7 @@ function main:keypressed(key)
     end
     self.pet.state = state_next
     self.state_dt = 0
+    self:play_state_sound()
   end
 
 end
