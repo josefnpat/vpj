@@ -5,6 +5,12 @@ states = {
   main = require"gamestates.main",
 }
 
+fonts = {
+  default = love.graphics.newFont("assets/fonts/CarterOne.ttf",16),
+}
+
+love.graphics.setFont(fonts.default)
+
 libs = {
   hump = {
     gamestate = require"libs.hump.gamestate",

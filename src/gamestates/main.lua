@@ -5,29 +5,26 @@ function main:init()
   self.actions:add(
     love.graphics.newImage("assets/actions/play.png"),
     function()
-      if self.pet.state ~= "play" then
-        self.pet.happy = math.min(1,self.pet.happy + 0.5)
-      end
+      self.pet.happy = math.min(1,self.pet.happy + 0.5)
       self.pet.state = "play"
       self.state_dt = 0
+      self:play_state_sound()
     end)
   self.actions:add(
     love.graphics.newImage("assets/actions/heal.png"),
     function()
-      if self.pet.state ~= "heal" then
-        self.pet.happy = math.max(0,self.pet.hurt - 0.25)
-      end
+      self.pet.hurt = math.max(0,self.pet.hurt - 0.25)
       self.pet.state = "heal"
       self.state_dt = 0
+      self:play_state_sound()
     end)
   self.actions:add(
     love.graphics.newImage("assets/actions/feed.png"),
     function()
-      if self.pet.state ~= "feed" then
-        self.pet.hungry = math.max(0,self.pet.hungry - 0.5)
-      end
+      self.pet.hungry = math.max(0,self.pet.hungry - 0.5)
       self.pet.state = "feed"
       self.state_dt = 0
+      self:play_state_sound()
     end)
 
   self.actions:add(
@@ -161,6 +158,21 @@ function main:draw()
     self.pet.scale,self.pet.scale,
     frame:getWidth()/2,frame:getHeight()/2)
 
+  for i,v in pairs({
+    {name="Happiness",value=self.pet.happy},
+    {name="Hunger",value=self.pet.hungry},
+    {name="Hurt",value=self.pet.hurt},
+  }) do
+    local bh = 24
+    local x,y,w,h = 32,64+(bh+2)*i,128,bh
+    love.graphics.setColor(0,0,0)
+    love.graphics.rectangle("fill",x,y,w,h)
+    love.graphics.setColor(127,127,127)
+    love.graphics.rectangle("fill",x+2,y+2,(w-4)*v.value,h-4)
+    love.graphics.setColor(255,255,255)
+    love.graphics.printf(v.name,x,y-2,w,"center")
+  end
+
   if debug_mode then
     love.graphics.print(
       "happy:"..self.pet.happy.."\n"..
@@ -199,6 +211,14 @@ function main:keypressed(key)
 
 end
 
+function main:play_state_sound()
+  local pet_state = self.pet.states[self.pet.state]
+  if #pet_state.sounds > 0 then
+    local sound = pet_state.sounds[math.random(#pet_state.sounds)]
+    sound:play()
+  end
+end
+
 function main:update(dt)
 
   self.time = (self.time + dt/(3*60) ) % 1 -- day lasts three minutes
@@ -222,13 +242,7 @@ function main:update(dt)
       end
     end
     self.pet.state = valid[math.random(#valid)]
-
-    local pet_state = self.pet.states[self.pet.state]
-    if #pet_state.sounds > 0 then
-      local sound = pet_state.sounds[math.random(#pet_state.sounds)]
-      sound:play()
-    end
-
+    self:play_state_sound()
   end
   self.pet.dt = self.pet.dt + dt
 
