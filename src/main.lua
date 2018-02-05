@@ -2,6 +2,7 @@
 io.stdout:setvbuf("no")
 
 states = {
+  intro = require"gamestates.intro",
   main = require"gamestates.main",
 }
 
@@ -20,7 +21,7 @@ libs = {
 
 function love.load()
   libs.hump.gamestate.registerEvents()
-  libs.hump.gamestate.switch(states.main)
+  libs.hump.gamestate.switch(states.intro)
   local music = love.audio.newSource("assets/music.wav","stream")
   music:setLooping(true)
   music:play()
