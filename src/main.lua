@@ -22,7 +22,8 @@ libs = {
 function love.load()
   libs.hump.gamestate.registerEvents()
   libs.hump.gamestate.switch(states.intro)
-  local music = love.audio.newSource("assets/music.wav","stream")
+  local music = love.audio.newSource("assets/channel_your_inner_pet.mp3","stream")
   music:setLooping(true)
+  music:setVolume(0.8)
   music:play()
 end
