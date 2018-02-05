@@ -5,7 +5,7 @@ function main:init()
   self.actions:add(
     love.graphics.newImage("assets/actions/play.png"),
     function()
-      self.pet.happy = math.min(1,self.pet.happy + 0.5)
+      self.pet.happy = math.min(1,self.pet.happy + 0.125)
       self.pet.state = "play"
       self.state_dt = 0
       self:play_state_sound()
@@ -13,7 +13,7 @@ function main:init()
   self.actions:add(
     love.graphics.newImage("assets/actions/heal.png"),
     function()
-      self.pet.hurt = math.max(0,self.pet.hurt - 0.25)
+      self.pet.hurt = math.max(0,self.pet.hurt - 0.125)
       self.pet.state = "heal"
       self.state_dt = 0
       self:play_state_sound()
@@ -21,7 +21,7 @@ function main:init()
   self.actions:add(
     love.graphics.newImage("assets/actions/feed.png"),
     function()
-      self.pet.hungry = math.max(0,self.pet.hungry - 0.5)
+      self.pet.hungry = math.max(0,self.pet.hungry - 0.125)
       self.pet.state = "feed"
       self.state_dt = 0
       self:play_state_sound()
@@ -70,7 +70,7 @@ function main:init()
   self.pet = {
     state = "normal",
     x = 320,
-    y = 180,
+    y = 240,
     dt = 0,
     scale = 1/2,
     states = {
